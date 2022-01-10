@@ -1,14 +1,13 @@
 package com.tqi.teste.creditotqi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.math.BigDecimal;
+import java.util.List;
 
+@Setter
 @Getter
 @Entity
 @Builder
@@ -26,14 +25,22 @@ public class Cliente {
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    @Column(nullable = false, unique = true)
+    private String rg;
+
     @Email
+    @Column(nullable = false, unique = true)
     private String email;
 
-
+    @Column(nullable = false, unique = true)
+    private String senha;
 
     private BigDecimal renda;
 
     @Embedded
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Emprestimo> emprestimos;
 
 }
