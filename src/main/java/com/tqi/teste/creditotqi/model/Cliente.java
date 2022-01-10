@@ -23,6 +23,7 @@ public class Cliente implements Serializable {
     private Integer id;
 
     @Column(nullable = false)
+    @NotEmpty(message = "O nome é requerido!")
     private String name;
 
     @Column(nullable = false, unique = true)

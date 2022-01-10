@@ -1,8 +1,8 @@
 package com.tqi.teste.creditotqi.service;
 
+import com.tqi.teste.creditotqi.service.exceptions.ObjectNofFoundExcpetion;
 import com.tqi.teste.creditotqi.model.Cliente;
 import com.tqi.teste.creditotqi.model.Emprestimo;
-import com.tqi.teste.creditotqi.repository.ClienteRepository;
 import com.tqi.teste.creditotqi.repository.EmprestimoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +25,12 @@ public class EmprestimoService {
 
     public Emprestimo findById(Integer id) {
         Optional<Emprestimo> obj = emprestimoRepository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectNofFoundExcpetion(
+                "Objeto não encontrado! ID: "+id+", Tipo: "+Emprestimo.class.getName()));
     }
 
     public Emprestimo create(Emprestimo obj) {
         obj.setId(null);
-        System.out.println("Cheguei aqui!");
         return emprestimoRepository.save(obj);
     }
 

@@ -1,6 +1,7 @@
 package com.tqi.teste.creditotqi.service;
 
 
+import com.tqi.teste.creditotqi.service.exceptions.ObjectNofFoundExcpetion;
 import com.tqi.teste.creditotqi.model.Cliente;
 import com.tqi.teste.creditotqi.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class ClienteService {
 
     public Cliente findById(Integer id) {
         Optional<Cliente> obj = clienteRepository.findById(id);
-        return obj.orElse(null);
+        return obj.orElseThrow(() -> new ObjectNofFoundExcpetion(
+                "Objeto não encontrado! ID: "+id+", Tipo: "+Cliente.class.getName()));
     }
 
     public List<Cliente> findAll() {
