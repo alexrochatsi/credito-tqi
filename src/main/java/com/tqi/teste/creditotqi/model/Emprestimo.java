@@ -1,10 +1,12 @@
 package com.tqi.teste.creditotqi.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,20 +16,23 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Emprestimo {
+public class Emprestimo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+    @NotNull(message = "O valor do empréstimo é requerido!")
     private BigDecimal valor;
 
+    @NotNull(message = "A data da primeira parcela é requerida!")
     private LocalDate dataPrimeiraParcela;
 
-    @Column
-    @Size (min = 0, max = 60)
+    @NotNull
+    @Max(value = 60, message = "O valor máximo de parcelas não pode ser superior a 60!")
     private int quantidadeParcelas;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
