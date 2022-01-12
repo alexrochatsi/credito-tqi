@@ -1,5 +1,6 @@
 package com.tqi.teste.creditotqi.service;
 
+import com.tqi.teste.creditotqi.dto.EmprestimoDTO;
 import com.tqi.teste.creditotqi.service.exceptions.ObjectNofFoundExcpetion;
 import com.tqi.teste.creditotqi.model.Cliente;
 import com.tqi.teste.creditotqi.model.Emprestimo;
@@ -44,5 +45,13 @@ public class EmprestimoService {
         Cliente cliente = clienteService.findById(id_cliente);
         obj.setCliente(cliente);
         return emprestimoRepository.save(obj);
+    }
+
+    public Emprestimo update(Integer id, EmprestimoDTO obj) {
+        Emprestimo obj2 = findById(id);
+        obj2.setDataPrimeiraParcela(obj.getDataPrimeiraParcela());
+        obj2.setValor(obj.getValor());
+        obj2.setQuantidadeParcelas(obj.getQuantidadeParcelas());
+        return emprestimoRepository.save(obj2);
     }
 }

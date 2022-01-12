@@ -1,5 +1,8 @@
-package com.tqi.teste.creditotqi.model;
+package com.tqi.teste.creditotqi.dto;
 
+import com.tqi.teste.creditotqi.model.Cliente;
+import com.tqi.teste.creditotqi.model.Emprestimo;
+import com.tqi.teste.creditotqi.model.Endereco;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,16 +13,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 @Setter
 @Getter
-@Entity
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class Cliente implements Serializable {
+public class ClienteDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -45,7 +44,19 @@ public class Cliente implements Serializable {
     @Embedded
     private Endereco endereco;
 
-    //deleta emprestimos se excluir o cliente
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Emprestimo> emprestimos;
+    public ClienteDTO() {
+        super();
+    }
+
+    public ClienteDTO(Cliente obj) {
+        super();
+        this.id = obj.getId();
+        this.name = obj.getName();
+        this.cpf = obj.getCpf();
+        this.rg = obj.getRg();
+        this.email = obj.getEmail();
+        this.senha = obj.getSenha();
+        this.renda = obj.getRenda();
+        this.endereco = obj.getEndereco();
+    }
 }

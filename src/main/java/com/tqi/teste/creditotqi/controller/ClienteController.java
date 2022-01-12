@@ -1,6 +1,7 @@
 package com.tqi.teste.creditotqi.controller;
 
 
+import com.tqi.teste.creditotqi.dto.ClienteDTO;
 import com.tqi.teste.creditotqi.model.Cliente;
 import com.tqi.teste.creditotqi.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //permite requisicao de outros lugares
 @CrossOrigin("*")
@@ -22,9 +24,10 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAll(){
+    public ResponseEntity<List<ClienteDTO>> findAll(){
         List<Cliente> list = clienteService.findAll();
-        return ResponseEntity.ok().body(list);
+        List<ClienteDTO> listDTO = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 
     @GetMapping(value = "/{id}")
@@ -39,6 +42,19 @@ public class ClienteController {
         cliente = clienteService.create(cliente);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).body(cliente);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ClienteDTO> update(@Valid @PathVariable Integer id, @RequestBody ClienteDTO objDTO) {
+        Cliente newObj = clienteService.update(id,objDTO);
+        return ResponseEntity.ok().body(new ClienteDTO(newObj));
+    }
+
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@Valid @PathVariable Integer id) {
+        clienteService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

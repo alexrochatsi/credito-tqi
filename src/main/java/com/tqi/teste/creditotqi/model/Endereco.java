@@ -25,4 +25,5 @@ public class Endereco {
     private String cidade;
     @NotEmpty(message = "O estado é requerido!")
     private String estado;
+
 }

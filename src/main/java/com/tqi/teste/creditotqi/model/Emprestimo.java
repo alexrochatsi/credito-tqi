@@ -32,8 +32,10 @@ public class Emprestimo implements Serializable {
     @Max(value = 60, message = "O valor máximo de parcelas não pode ser superior a 60!")
     private int quantidadeParcelas;
 
+
     @JsonIgnore
-    @ManyToOne
+    //deleta os emprestimos associados ao excluir o cliente
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 

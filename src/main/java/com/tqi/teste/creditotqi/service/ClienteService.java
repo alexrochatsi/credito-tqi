@@ -1,6 +1,8 @@
 package com.tqi.teste.creditotqi.service;
 
 
+import com.tqi.teste.creditotqi.dto.ClienteDTO;
+import com.tqi.teste.creditotqi.service.exceptions.DataIntegrityViolationException;
 import com.tqi.teste.creditotqi.service.exceptions.ObjectNofFoundExcpetion;
 import com.tqi.teste.creditotqi.model.Cliente;
 import com.tqi.teste.creditotqi.repository.ClienteRepository;
@@ -29,5 +31,25 @@ public class ClienteService {
     public Cliente create(Cliente obj) {
         obj.setId(null);
         return clienteRepository.save(obj);
+    }
+
+    public Cliente update(Integer id, ClienteDTO obj) {
+        Cliente obj2 = findById(id);
+        obj2.setName(obj.getName());
+        obj2.setCpf(obj.getCpf());
+        obj2.setEmail(obj.getEmail());
+        obj2.setRenda(obj.getRenda());
+        obj2.setSenha(obj.getSenha());
+        obj2.setEndereco(obj.getEndereco());
+        return clienteRepository.save(obj2);
+    }
+
+    public void delete(Integer id) {
+        findById(id);
+        try {
+            clienteRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Cliente não pode ser deletado! Possui emprestimos assosiados!");
+        }
     }
 }
